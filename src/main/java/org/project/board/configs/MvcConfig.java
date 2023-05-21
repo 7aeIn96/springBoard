@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.project.board.configs.interceptors.SiteConfigInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableJpaAuditing // 프록시 자동 생성, 소스 추가
 public class MvcConfig implements WebMvcConfigurer { // // 스프링에 내장되어 있는 WebMvc 재설정
 
     @Value("${file.upload.path}")
