@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!-- 토큰 검증 -->
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <!-- 시큐리티 내에서 제공되는 보안방식 ( 토큰 ) -->
+    <!--    <meta name="description" th:content="${siteConfig.siteDescription}">-->
+
+    <title th:if="${pageTitle != null}" th:text="${pageTitle}"></title>
+    <!--  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin/style.css?v={v}(v=${cssJsVersion})}">
+    <link rel="stylesheet" type="text/css" th:each="file : ${addCss}"
+          th:href="@{/css/admin/{cssFile}.css?v={v}(cssFile=${file}, v=${cssJsVersion})}">
+    <!--작업 시 파일 변경시마다 갱신하면서 버전을 표시해줄 수 있게 버전 추가( style, 스크립트 ) + DB에서 관리할 수 있게 추가 설정 필요-->
+    <!--CSS, JS 버전이 값이 없기때문에 공통 인터셉터 사이트 설정 -->
+    <th:block layout:fragment="addCss"></th:block>
+
+    <script th:src="@{/js/admin/common.js?v={v}(v=${cssJsVersion})}"></script>
+    <script th:each="jsFile : ${addScript}"
+            th:href="@{/js/admin/{jsFile}.js?v={v}(jsFile=${jsFile}, v=${cssJsVersion})}"></script>
+    <th:block layout:fragment="addScript"></th:block>
+</head>
+
+<body>
+<header th:replace="~{outlines/admin/header::common}"></header>
+<main layout:fragment="content"></main> <!--th:fragment = content로 정의한 부분으로 대체-->
+<footer th:replace="~{outlines/admin/footer::common}"></footer>
+<iframe name="ifrmProcess" class="dn"></iframe> <!-- 내부창 = 불필요한 링크 이동 방지 -->
+</body>
+</html>
