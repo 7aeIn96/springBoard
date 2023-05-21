@@ -13,8 +13,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component // 필수!
 public class SiteConfigInterceptor implements HandlerInterceptor {
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception { // 공통 부분, 버전 미리 정의
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 요청 처리 전, 컨트롤러 빈 실행 전 호출 / 공통 기능, 버전 미리 정의
         request.setAttribute("cssJsVersion", 1);
-        return true;
+        return true; // 통제 제어
     }
 }
