@@ -2,6 +2,7 @@ package org.project.board.models.member;
 
 import lombok.RequiredArgsConstructor;
 import org.project.board.commons.validators.MobileValidator;
+import org.project.board.commons.validators.PasswordValidator;
 import org.project.board.repositories.MemberRepository;
 import org.project.board.controllers.members.JoinForm;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import org.springframework.validation.Validator;
  */
 @Component // 관리 객체
 @RequiredArgsConstructor
-public class JoinValidator implements Validator, MobileValidator {
+public class JoinValidator implements Validator, MobileValidator, PasswordValidator {
 
     private final MemberRepository memberRepository;
 
@@ -46,13 +47,12 @@ public class JoinValidator implements Validator, MobileValidator {
         }
 
         // 2. 비밀번호 복잡성 체크 : 알파벳(대문자, 소문자 포함), 숫자, 특수문자 포함 ( PasswordValidator 사용 )
-        if (userPw != null && !userPw.isBlank()
+        if (userPw != null && !userPw.isBlank() // 비밀번호가 있을 때
                 && (!alphaCheck(userPw,false)
                 || !numberCheck(userPw)
                 || !specialCharsCheck(userPw))) {
             errors.rejectValue("userPw", "Validation.complexity.password");
         }
-
 
         // 3. 비밀번호와 비밀번호 확인 일치
         if (userPw != null && !userPw.isBlank() && userPwRe != null && !userPwRe.isBlank() && !userPw.equals(userPwRe)) {
