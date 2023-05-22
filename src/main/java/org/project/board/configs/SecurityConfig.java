@@ -1,5 +1,8 @@
 package org.project.board.configs;
 
+import jakarta.servlet.http.HttpServletResponse;
+import org.project.board.models.member.LoginFailureHandler;
+import org.project.board.models.member.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,13 +20,33 @@ public class SecurityConfig {
                 .loginPage("/member/login")
                 .usernameParameter("userId")
                 .passwordParameter("userPw")
-                .defaultSuccessUrl("/")
-                .failureForwardUrl("/member/login")
+                .successHandler(new LoginSuccessHandler())
+                .failureHandler(new LoginFailureHandler())
                 .and()
 
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                 .logoutSuccessUrl("/member/login");
+
+        // URL 패턴에 따라 접근할 수 있는 인가
+        http.authorizeHttpRequests()
+                .requestMatchers("/mypage/**").authenticated() // 회원 전용
+//                .requestMatchers("/admin/**").hasAuthority("ADMIN") // 관리자 전용
+                .anyRequest().permitAll(); // 그 외 모든 페이지는 모든 회원 접근 가능
+
+        http.exceptionHandling() // url과 Role에 따라서 권한이 다르면 Exception 불러오기
+                .authenticationEntryPoint((req, res, e) -> {
+                    String URI = req.getRequestURI();
+
+                    if (URI.indexOf("/admin") != -1) { // 관리자 페이지
+                        res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "NOT AUTHORIZED");
+                    } else { // 회원 전용 페이지
+                        String redirectURL = req.getContextPath() + "/member/login"; // 일반 방식 = 회원 로그인
+                        res.sendRedirect(redirectURL);
+                    }
+                });
+
+        http.headers().frameOptions().sameOrigin(); // 같은 도메인인 경우 Iframe 데이터 공유
 
         return http.build();
     }
