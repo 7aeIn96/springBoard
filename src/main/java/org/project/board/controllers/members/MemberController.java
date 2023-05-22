@@ -24,6 +24,11 @@ public class MemberController {
 
         return "member/join";
     }
+    @GetMapping("/login")
+    public String login() {
+
+        return "member/login";
+    }
 
     @PostMapping("/join")  // 가입 처리 ( 검증 필요 )
     public String joinPs(@Valid JoinForm joinForm, Errors errors) {
