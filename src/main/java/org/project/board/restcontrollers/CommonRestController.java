@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 공통 예외처리
+ * 오류나 일반적인 데이터 부분도 동일한 형식의 JSON으로 출력하기 위함.
  * @ControllerAdvice와 @ResponseBody 조합
  */
 @RestControllerAdvice("org.project.board.restcontrollers") // 적용범위

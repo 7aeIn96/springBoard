@@ -25,7 +25,12 @@
 
 <body>
 <header th:replace="~{outlines/admin/header::common}"></header>
-<main layout:fragment="content"></main> <!--th:fragment = content로 정의한 부분으로 대체-->
+<main>
+    <aside th:replace="~{outlines/admin/side::menu}"></aside>
+    <section>
+        <section layout:fragment="content"></section>  <!--layout:fragment = content로 정의한 부분으로 대체-->
+    </section>
+</main>
 <footer th:replace="~{outlines/admin/footer::common}"></footer>
 <iframe name="ifrmProcess" class="dn"></iframe> <!-- 내부창 = 불필요한 링크 이동 방지 -->
 </body>
