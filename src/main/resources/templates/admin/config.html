@@ -8,19 +8,29 @@
     <h1 th:text="${title}"></h1>
 
     <form method="post" name="frmSave" th:action="@{/admin/config}" autocomplete="off">
-        <tr>
-            <th>사이트 제목</th>
-            <td>
-                <input type="text" name="siteTitle">
-            </td>
-        </tr>
+        <table class="table-cols">
+            <tr>
+                <th>사이트 제목</th>
+                <td><input type="text" name="siteTitle"></td>
+            </tr>
+            <tr>
+                <th>사이트 설명</th>
+                <td><textarea name="siteDescription"></textarea></td>
+            </tr>
+            <tr>
+                <th>CSS, JS 버전</th>
+                <td><input type="number" name="cssJsVersion"></td>
+            </tr>
+            <tr>
+                <th>회원가입 약관</th>
+                <td><textarea name="joinTerms"></textarea></td>
+            </tr>
+        </table>
 
-        <tr>
-            <th>사이트 설명</th>
-            <td>
-                <textarea name="siteDescription"></textarea>
-            </td>
-        </tr>
+        <div class="btns">
+            <button type="reset">다시입력</button>
+            <button type="submit">저장하기</button>
+        </div>
     </form>
 </section>
 </html>
