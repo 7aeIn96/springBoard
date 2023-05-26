@@ -2,28 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/admin/main}">
-<section layout:fragment="content">
-    <th:block th:replace="~{admin/commons/_message::message}"></th:block>
 
+<section layout:fragment="content">
     <h1 th:text="${title}"></h1>
 
-    <form method="post" name="frmSave" th:action="@{/admin/config}" autocomplete="off">
+    <th:block th:replace="~{admin/commons/_message::message}"></th:block>
+
+    <form method="post" name="frmSave" th:action="@{/admin/config}" autocomplete="off" th:object="${configForm}">
         <table class="table-cols">
             <tr>
                 <th>사이트 제목</th>
-                <td><input type="text" name="siteTitle"></td>
+                <td><input type="text" name="siteTitle" th:field="*{siteTitle}"></td>
             </tr>
             <tr>
                 <th>사이트 설명</th>
-                <td><textarea name="siteDescription"></textarea></td>
+                <td><textarea name="siteDescription" th:field="*{siteDescription}"></textarea></td>
             </tr>
             <tr>
                 <th>CSS, JS 버전</th>
-                <td><input type="number" name="cssJsVersion"></td>
+                <td><input type="number" name="cssJsVersion" th:field="*{cssJsVersion}"></td>
             </tr>
             <tr>
                 <th>회원가입 약관</th>
-                <td><textarea name="joinTerms"></textarea></td>
+                <td><textarea name="joinTerms" th:field="*{joinTerms}"></textarea></td>
             </tr>
         </table>
 

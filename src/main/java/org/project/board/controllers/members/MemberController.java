@@ -21,7 +21,7 @@ public class MemberController {
 
     @GetMapping("/join")
     public String join(@ModelAttribute JoinForm joinForm, Model model) {
-
+        commonProcess(model);
         return "member/join";
     }
     @GetMapping("/login")
@@ -31,7 +31,8 @@ public class MemberController {
     }
 
     @PostMapping("/join")  // 가입 처리 ( 검증 필요 )
-    public String joinPs(@Valid JoinForm joinForm, Errors errors) {
+    public String joinPs(@Valid JoinForm joinForm, Errors errors, Model model) {
+        commonProcess(model);
         joinValidator.validate(joinForm, errors);
         if (errors.hasErrors()) { // 검증 후 에러가 있다면 다시 join으로
             return "member/join";
@@ -39,5 +40,8 @@ public class MemberController {
         saveService.save(joinForm); // 에러 없으면 saveService로
 
         return "redirect:/member/login";
+    }
+    private void commonProcess(Model model){
+        model.addAttribute("pageTitle", "회원가입");
     }
 }

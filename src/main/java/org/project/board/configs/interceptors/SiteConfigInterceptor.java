@@ -1,9 +1,14 @@
 package org.project.board.configs.interceptors;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.project.board.commons.configs.ConfigInfoService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import java.util.Map;
 
 /**
  * 사이트 설정 유지 인터셉터 ( 공통 기능 처리 )
@@ -11,11 +16,18 @@ import org.springframework.web.servlet.HandlerInterceptor;
  */
 
 @Component // 필수!
+@RequiredArgsConstructor
 public class SiteConfigInterceptor implements HandlerInterceptor {
+    private final ConfigInfoService infoService;
+    private final HttpServletRequest request;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 요청 처리 전, 컨트롤러 빈 실행 전 호출 / 공통 기능, 버전 미리 정의
-        request.setAttribute("cssJsVersion", 1);
-        return true; // 통제 제어
+
+        /** 사이트 설정 조회 */
+        Map<String, String> siteConfigs = infoService.get("siteConfig",  new TypeReference<Map<String, String>>() {});
+        request.setAttribute("siteConfig", siteConfigs);
+
+        return true;
     }
 }

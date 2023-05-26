@@ -5,21 +5,25 @@
     <!-- 토큰 검증 -->
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <!-- 시큐리티 내에서 제공되는 보안방식 ( 토큰 ) -->
-    <!--    <meta name="description" th:content="${siteConfig.siteDescription}">-->
+    <!-- 시큐리티 내에서 제공되는 보안방식 ( 토큰 ), 키워드나 타이틀은 검색반영에 중요한 부분 -->
+    <meta name="description" th:content="${siteConfig.siteDescription}">
 
-    <title th:if="${pageTitle != null}" th:text="${pageTitle}"></title>
+    <title>
+        <th:block th:if="${pageTitle != null}" th:text="${pageTitle + ' ::'}"> </th:block>
+        <th:block th:text="${siteConfig.siteTitle}"></th:block>
+    </title>
+    <!--타이틀 값이 있으면 pageTitle 출력, 없으면 제목 출력-->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/front/style.css?v={v}(v=${cssJsVersion})}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/front/style.css?v={v}(v=${siteConfig.cssJsVersion})}">
     <link rel="stylesheet" type="text/css" th:each="file : ${addCss}"
-          th:href="@{/css/front/{cssFile}.css?v={v}(cssFile=${file}, v=${cssJsVersion})}">
+          th:href="@{/css/front/{cssFile}.css?v={v}(cssFile=${file}, v=${siteConfig.cssJsVersion})}">
     <!--작업 시 파일 변경시마다 갱신하면서 버전을 표시해줄 수 있게 버전 추가( style, 스크립트 ) + DB에서 관리할 수 있게 추가 설정 필요-->
     <!--CSS, JS 버전이 값이 없기때문에 공통 인터셉터 사이트 설정 -->
     <th:block layout:fragment="addCss"></th:block>
 
-    <script th:src="@{/js/front/common.js?v={v}(v=${cssJsVersion})}"></script>
+    <script th:src="@{/js/front/common.js?v={v}(v=${siteConfig.cssJsVersion})}"></script>
     <script th:each="jsFile : ${addScript}"
-            th:href="@{/js/front/{jsFile}.js?v={v}(jsFile=${jsFile}, v=${cssJsVersion})}"></script>
+            th:href="@{/js/front/{jsFile}.js?v={v}(jsFile=${jsFile}, v=${siteConfig.cssJsVersion})}"></script>
     <th:block layout:fragment="addScript"></th:block>
 </head>
 
