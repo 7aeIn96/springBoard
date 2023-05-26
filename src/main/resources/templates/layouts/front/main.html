@@ -9,10 +9,10 @@
     <meta name="description" th:content="${siteConfig.siteDescription}">
 
     <title>
-        <th:block th:if="${pageTitle != null}" th:text="${pageTitle + ' ::'}"> </th:block>
+        <th:block th:if="${pageTitle != null}" th:text="${pageTitle + ' ::'}"></th:block>
         <th:block th:text="${siteConfig.siteTitle}"></th:block>
     </title>
-    <!--타이틀 값이 있으면 pageTitle 출력, 없으면 제목 출력-->
+    <!--타이틀 값이 있으면 pageTitle 출력 :: 뒤 제목 출력 -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/front/style.css?v={v}(v=${siteConfig.cssJsVersion})}">
     <link rel="stylesheet" type="text/css" th:each="file : ${addCss}"

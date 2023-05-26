@@ -5,21 +5,24 @@
     <!-- 토큰 검증 -->
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <!-- 시큐리티 내에서 제공되는 보안방식 ( 토큰 ) -->
-    <!--    <meta name="description" th:content="${siteConfig.siteDescription}">-->
+    <!-- 시큐리티 내에서 제공되는 보안방식 ( 토큰 ), 키워드나 타이틀은 검색반영에 중요한 부분 -->
+    <meta name="description" th:content="${siteConfig.siteDescription}">
 
-    <title th:if="${pageTitle != null}" th:text="${pageTitle}"></title>
+    <title>
+        <th:block th:if="${pageTitle != null}" th:text="${pageTitle + ' ::'}"></th:block>
+        <th:block th:text="${siteConfig.siteTitle}"></th:block>
+    </title>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/admin/style.css?v={v}(v=${cssJsVersion})}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin/style.css?v={v}(v=${siteConfig.cssJsVersion})}">
     <link rel="stylesheet" type="text/css" th:each="file : ${addCss}"
-          th:href="@{/css/admin/{cssFile}.css?v={v}(cssFile=${file}, v=${cssJsVersion})}">
+          th:href="@{/css/admin/{cssFile}.css?v={v}(siteConfig.cssFile=${file}, v=${cssJsVersion})}">
     <!--작업 시 파일 변경시마다 갱신하면서 버전을 표시해줄 수 있게 버전 추가( style, 스크립트 ) + DB에서 관리할 수 있게 추가 설정 필요-->
     <!--CSS, JS 버전이 값이 없기때문에 공통 인터셉터 사이트 설정 -->
     <th:block layout:fragment="addCss"></th:block>
 
-    <script th:src="@{/js/admin/common.js?v={v}(v=${cssJsVersion})}"></script>
+    <script th:src="@{/js/admin/common.js?v={v}(v=${siteConfig.cssJsVersion})}"></script>
     <script th:each="jsFile : ${addScript}"
-            th:href="@{/js/admin/{jsFile}.js?v={v}(jsFile=${jsFile}, v=${cssJsVersion})}"></script>
+            th:href="@{/js/admin/{jsFile}.js?v={v}(jsFile=${jsFile}, v=${siteConfig.cssJsVersion})}"></script>
     <th:block layout:fragment="addScript"></th:block>
 </head>
 
@@ -28,6 +31,7 @@
 <main>
     <aside th:replace="~{outlines/admin/side::menu}"></aside>
     <section>
+        <th:block th:replace="~{admin/commons/_submenu::menus}"></th:block>
         <section layout:fragment="content"></section>  <!--layout:fragment = content로 정의한 부분으로 대체-->
     </section>
 </main>

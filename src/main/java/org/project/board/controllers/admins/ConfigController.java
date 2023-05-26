@@ -29,7 +29,7 @@ public class ConfigController {
         }
         */
         model.addAttribute("configForm", configForm == null ? new ConfigForm() : configForm);
-        // DB에 값이 없으면 폼 생성, 있으면 가져옴 = 사이트 설정
+        // DB에 값이 없으면 폼 생성, 있으면 가져온다 = 사이트 설정
 
         return "admin/config";
     }
