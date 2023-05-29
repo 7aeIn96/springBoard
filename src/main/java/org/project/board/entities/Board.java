@@ -76,7 +76,8 @@ public class Board extends BaseMemberEntity { // 관리자 게시판 관련 엔�
             return null;
         }
 
-        String[] categories = category.replaceAll("\\r","").trim().split("\\n"); // 리눅스 사용 시 \\r 제거 후 \\n기준으로 나눔
+        // trim으로 공백 제거, 리눅스 사용 시 \\r 제거 후 \\n 기준으로 나눔
+        String[] categories = category.replaceAll("\\r","").trim().split("\\n");
         return categories;
     }
 
