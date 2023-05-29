@@ -15,7 +15,7 @@ import java.util.Map;
  *      ( + 버전 관리 )
  */
 
-@Component // 필수!
+@Component("siteConf") // 필수!
 @RequiredArgsConstructor
 public class SiteConfigInterceptor implements HandlerInterceptor {
     private final ConfigInfoService infoService;
@@ -29,5 +29,12 @@ public class SiteConfigInterceptor implements HandlerInterceptor {
         request.setAttribute("siteConfig", siteConfigs);
 
         return true;
+    }
+    public String get(String name) {
+
+        Map<String, String> siteConfig = (Map<String, String>) request.getAttribute("siteConfig");
+        String value = siteConfig == null ? "" : siteConfig.get(name);
+
+        return value;
     }
 }

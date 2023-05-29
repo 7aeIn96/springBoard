@@ -1,15 +1,16 @@
 package org.project.board.controllers.admins;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.project.board.commons.CommonException;
 import org.project.board.commons.MenuDetail;
 import org.project.board.commons.Menus;
+import org.project.board.models.board.config.BoardConfigSaveService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
     private final HttpServletRequest request;
+    private final BoardConfigSaveService configSaveService;
 
     /**
      * 게시판 목록
@@ -36,7 +38,7 @@ public class BoardController {
      * @return
      */
     @GetMapping("/register")
-    public String register(Model model) {
+    public String register(@ModelAttribute BoardForm boardForm, Model model) {
         commonProcess(model, "게시판 등록");
 
         return "admin/board/config";
@@ -68,8 +70,18 @@ public class BoardController {
      * @return
      */
     @PostMapping("/save")
-    public String save() {
+    public String save(@Valid BoardForm boardForm, Errors errors, Model model) {
+        String mode = boardForm.getMode();
+        commonProcess(model, mode != null && mode.equals("update") ? "게시판 수정" : "게시판 등록");
+        try {
+            configSaveService.save(boardForm, errors); // 검증된 에러가 발견되지않으면 save 후 끝!
+        } catch (CommonException e) { //
+            errors.reject("BoardConfigError", e.getMessage());
+        }
 
+        if (errors.hasErrors()) { // 에러가 있으면 ( 필수 항목 체크만 하니까 별도의 Validator 필요 X )
+            return "admin/board/config";
+        }
         return "redirect:/admin/board"; // 게시판 목록
     }
     private void commonProcess(Model model, String title) {

@@ -6,36 +6,34 @@
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <!-- 시큐리티 내에서 제공되는 보안방식 ( 토큰 ), 키워드나 타이틀은 검색반영에 중요한 부분 -->
-    <meta name="description" th:content="${siteConfig.siteDescription}">
-
+    <meta name="description" th:content="${@siteConf.get('siteDescription')}">
     <title>
         <th:block th:if="${pageTitle != null}" th:text="${pageTitle + ' ::'}"></th:block>
-        <th:block th:text="${siteConfig.siteTitle}"></th:block>
+        <th:block th:text="${@siteConf.get('siteTitle')}"></th:block>
     </title>
+    <!--타이틀 값이 있으면 pageTitle 출력, 없으면 제목 출력-->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/admin/style.css?v={v}(v=${siteConfig.cssJsVersion})}">
-    <link rel="stylesheet" type="text/css" th:each="file : ${addCss}"
-          th:href="@{/css/admin/{cssFile}.css?v={v}(siteConfig.cssFile=${file}, v=${cssJsVersion})}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin/style.css?v={v}(v=${@siteConf.get('cssJsVersion')})}">
+    <link rel="stylesheet" type="text/css" th:each="file : ${addCss}" th:href="@{/css/admin/{cssFile}.css?v={v}(cssFile=${file}, v=${@siteConf.get('cssJsVersion')})}">
+    <th:block layout:fragment="addCss"></th:block>
     <!--작업 시 파일 변경시마다 갱신하면서 버전을 표시해줄 수 있게 버전 추가( style, 스크립트 ) + DB에서 관리할 수 있게 추가 설정 필요-->
     <!--CSS, JS 버전이 값이 없기때문에 공통 인터셉터 사이트 설정 -->
-    <th:block layout:fragment="addCss"></th:block>
 
-    <script th:src="@{/js/admin/common.js?v={v}(v=${siteConfig.cssJsVersion})}"></script>
-    <script th:each="jsFile : ${addScript}"
-            th:href="@{/js/admin/{jsFile}.js?v={v}(jsFile=${jsFile}, v=${siteConfig.cssJsVersion})}"></script>
+    <script th:src="@{/js/admin/common.js?v={v}(v=${@siteConf.get('cssJsVersion')})}"></script>
+    <script th:each="jsFile : ${addScript}" th:href="@{/js/admin/{jsFile}.js?v={v}(jsFile=${jsFile}, v=${@siteConf.get('cssJsVersion')})}"></script>
     <th:block layout:fragment="addScript"></th:block>
 </head>
 
 <body>
-<header th:replace="~{outlines/admin/header::common}"></header>
-<main>
-    <aside th:replace="~{outlines/admin/side::menu}"></aside>
-    <section>
-        <th:block th:replace="~{admin/commons/_submenu::menus}"></th:block>
-        <section layout:fragment="content"></section>  <!--layout:fragment = content로 정의한 부분으로 대체-->
-    </section>
-</main>
-<footer th:replace="~{outlines/admin/footer::common}"></footer>
-<iframe name="ifrmProcess" class="dn"></iframe> <!-- 내부창 = 불필요한 링크 이동 방지 -->
+    <header th:replace="~{outlines/admin/header::common}"></header>
+    <main>
+        <aside th:replace="~{outlines/admin/side::menu}"></aside>
+        <section>
+            <th:block th:replace="~{admin/commons/_submenu::menus}"></th:block>
+            <section layout:fragment="content"></section>  <!--layout:fragment = content로 정의한 부분으로 대체-->
+        </section>
+    </main>
+    <footer th:replace="~{outlines/admin/footer::common}"></footer>
+    <iframe name="ifrmProcess" class="dn"></iframe> <!-- 내부창 = 불필요한 링크 이동 방지 -->
 </body>
 </html>
