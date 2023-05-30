@@ -9,7 +9,9 @@ import org.project.board.commons.MenuDetail;
 import org.project.board.commons.Menus;
 import org.project.board.entities.Board;
 import org.project.board.models.board.config.BoardConfigInfoService;
+import org.project.board.models.board.config.BoardConfigListService;
 import org.project.board.models.board.config.BoardConfigSaveService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -24,6 +26,7 @@ public class BoardController {
     private final HttpServletRequest request;
     private final BoardConfigSaveService configSaveService;
     private final BoardConfigInfoService configInfoService;
+    private final BoardConfigListService configListService;
 
     /**
      * 게시판 목록
@@ -31,8 +34,10 @@ public class BoardController {
      * @return
      */
     @GetMapping
-    public String index(Model model) {
+    public String index(@ModelAttribute BoardSearch boardSearch, Model model) {
         commonProcess(model, "게시판 목록");
+        Page<Board> data = configListService.gets(boardSearch);
+        model.addAttribute("items", data.getContent());
 
         return "admin/board/index";
     }
