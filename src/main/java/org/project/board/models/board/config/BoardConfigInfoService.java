@@ -14,12 +14,9 @@ public class BoardConfigInfoService {
     private final BoardRepository boardRepository;
     private final MemberUtil memberUtil;
 
+    // front 접근 권한 체크
     public Board get(String bId, String location) { // front, 접근 권한 체크
         return get(bId, false, location);
-    }
-
-    public Board get(String bId, boolean isAdmin) { // 관리자페이지, 접근 권한 체크 필요없음.
-        return get(bId, isAdmin, null);
     }
 
     /**
@@ -41,14 +38,21 @@ public class BoardConfigInfoService {
         return board;
     }
 
+    // 관리자는 location 불필요
+    public Board get(String bId, boolean isAdmin) { // 관리자페이지, 접근 권한 체크 필요없음.
+        return get(bId, isAdmin, null);
+    }
+
     /**
      * 접근 권한 체크
      * @param board
      */
     private void accessCheck(Board board, String location) {
+
         /**
          * use - false : 모든 항목 접근 불가, 단 관리자만 가능
          */
+
         if (!board.isUse() && !memberUtil.isAdmin()) {
             throw new BoardNotAllowedAccessException();
         }
