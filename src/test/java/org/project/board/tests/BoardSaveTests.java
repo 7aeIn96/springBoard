@@ -224,9 +224,9 @@ public class BoardSaveTests {
                         .param("gid", boardForm.getGid())
                         .with(csrf().asHeader()))
                 .andDo(print())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+                .andReturn() // 반환값
+                .getResponse() // 모의객체 생성
+                .getContentAsString(); // 바디에 출력된 데이터를 가져옴.
 
         /** 오류 메세지 포함하고 있으면 통과! */
         ResourceBundle bundle = ResourceBundle.getBundle("messages.validations");
@@ -237,7 +237,7 @@ public class BoardSaveTests {
                 bundle.getString("NotBlank.boardForm.guestPw"),
         };
 
-        Arrays.stream(messages).forEach(s -> assertTrue(body.contains(s)));
+        Arrays.stream(messages).forEach(s -> assertTrue(body.contains(s))); // 원했던 메세지가 바디에 포함되어 있으면 통과
 
         /*
         for (String message : messages) {

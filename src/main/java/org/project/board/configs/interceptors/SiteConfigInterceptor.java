@@ -30,7 +30,7 @@ public class SiteConfigInterceptor implements HandlerInterceptor {
 
         return true;
     }
-    public String get(String name) {
+    public String get(String name) { // SiteConfig 값이 있으면 가져오고, null이면 기본값
 
         Map<String, String> siteConfig = (Map<String, String>) request.getAttribute("siteConfig");
         String value = siteConfig == null ? "" : siteConfig.get(name);

@@ -25,6 +25,7 @@ public class ConfigInfoService {
     }
 
     public <T> T get(String code, Class<T> clazz, TypeReference<T> typeReference) {
+        try {
         // 가져오는 객체의 타입이 여러개라서 제네릭 사용
         // clazz가 null 값이면 TypeReference 사용, null이 아니면 clazz 사용
         Configs configs = repository.findById(code).orElse(null); // code가 없으면 null
@@ -32,8 +33,8 @@ public class ConfigInfoService {
             return null;
         }
         String value = configs.getValue();
-
         ObjectMapper om = new ObjectMapper(); // JSON과 자바 객체간의 변환을 도와줌
+
         T data = null;
         try {
             // JSON 형태를 자바 객체 형태로 변환
@@ -42,7 +43,10 @@ public class ConfigInfoService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
         return data;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
