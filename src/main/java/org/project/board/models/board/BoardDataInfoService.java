@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class BoardDataInfoService {
-
     private final BoardDataRepository boardDataRepository;
     private final BoardConfigInfoService configInfoService;
 

@@ -61,7 +61,7 @@ public class BoardSaveTests {
 
         // 게시판 설정 추가
         org.project.board.controllers.admins.BoardForm boardForm = new org.project.board.controllers.admins.BoardForm();
-        boardForm.setBId("freetalk");
+        boardForm.setBId("freetalk1000");
         boardForm.setBName("자유게시판");
         configSaveService.save(boardForm);
         board = configInfoService.get(boardForm.getBId(), true);

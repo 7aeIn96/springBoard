@@ -27,13 +27,10 @@ public class BoardFormValidator implements Validator {
             if (guestPw == null || guestPw.isBlank()) {
                 errors.rejectValue("guestPw", "NotBlank");
             }
-
             if (guestPw != null && guestPw.length() < 6) {
                 errors.rejectValue("guestPw", "Size");
             }
         }
-
         /** 비회원 비밀번호 체크 E */
-
     }
 }

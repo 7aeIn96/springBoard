@@ -39,7 +39,7 @@ public class SecurityConfig {
                     String URI = req.getRequestURI();
 
                     if (URI.indexOf("/admin") != -1) { // 관리자 페이지
-                        res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "NOT AUTHORIZED");
+                        res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "NOT AUTHORIZE"); // D
                     } else { // 회원 전용 페이지
                         String redirectURL = req.getContextPath() + "/member/login"; // 일반 방식 = 회원 로그인
                         res.sendRedirect(redirectURL);

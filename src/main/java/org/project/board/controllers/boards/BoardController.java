@@ -7,6 +7,7 @@ import org.project.board.commons.CommonException;
 import org.project.board.commons.MemberUtil;
 import org.project.board.entities.Board;
 import org.project.board.entities.BoardData;
+import org.project.board.models.board.BoardDataInfoService;
 import org.project.board.models.board.BoardDataSaveService;
 import org.project.board.models.board.config.BoardConfigInfoService;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardConfigInfoService boardConfigInfoService;
-//    private final BoardDataInfoService boardDataInfoService;
+    private final BoardDataInfoService boardDataInfoService;
     private final BoardDataSaveService saveService;
     private final BoardFormValidator formValidator;
     private final HttpServletResponse response;
@@ -76,6 +77,15 @@ public class BoardController {
 
     @GetMapping("/view/{id}")
     public String view(@PathVariable Long id, Model model) {
+        BoardData boardData = boardDataInfoService.get(id);
+        Board board = boardData.getBoard();
+
+        commonProcess(board.getBId(), "view", model);
+
+        model.addAttribute("boardData", boardData);
+        model.addAttribute("board", board);
+
+//        updateHitService.update(id);  // 게시글 조회수 update
 
         return "board/view";
     }
