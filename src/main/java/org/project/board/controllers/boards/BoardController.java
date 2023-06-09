@@ -3,6 +3,7 @@ package org.project.board.controllers.boards;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.project.board.commons.CommonException;
 import org.project.board.commons.MemberUtil;
 import org.project.board.entities.Board;
@@ -70,8 +71,16 @@ public class BoardController {
      * @return
      */
     @GetMapping("/{id}/update")
-    public String update(@PathVariable Long id, @ModelAttribute BoardForm boardForm, Model model) {
+    public String update(@PathVariable Long id, Model model) {
+        BoardData boardData = boardDataInfoService.get(id, "update");
+        Board board = boardData.getBoard();
         commonProcess(null, "update", model);
+
+        // 수정 권한 체크
+
+        BoardForm boardForm = new ModelMapper().map(boardData, BoardForm.class);
+        boardForm.setBId(board.getBId());
+        model.addAttribute("boardForm", boardForm);
 
         return "board/update";
     }

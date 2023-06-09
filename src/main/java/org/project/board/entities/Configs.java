@@ -6,8 +6,7 @@ import lombok.Data;
 /**
  * 사이트 설정이 많이 추가됨을 고려해서 key, value 값으로 편리하게 관리
  */
-@Entity
-@Data
+@Entity @Data
 public class Configs {
 
     @Id

@@ -43,8 +43,8 @@ public class UpdateHitService {
     private int getUid() {
         String ip = request.getRemoteAddr();
         String ua = request.getHeader("User-Agent");
-        Long userNo = memberUtil.isLogin() ? memberUtil.getMember().getUserNo() : 0L;
 
-        return Objects.hash(ip, ua, userNo);
+        // 로그인 했을 때는 회원번호로 uid 생성, 미로그인 상태는 hash ( ip + ua )
+        return memberUtil.isLogin() ? memberUtil.getMember().getUserNo().intValue() : Objects.hash(ip, ua);
     }
 }
