@@ -54,7 +54,7 @@ public class BoardConfigInfoService {
          */
 
         if (!board.isUse() && !memberUtil.isAdmin()) {
-            throw new BoardNotAllowedAccessException();
+            throw new BoardNotAllowAccessException();
         }
 
         Role role = Role.ALL;
@@ -73,7 +73,7 @@ public class BoardConfigInfoService {
         }
 
         if ((role == Role.USER && !memberUtil.isLogin()) || (role == Role.ADMIN && !memberUtil.isAdmin())) {
-            throw new BoardNotAllowedAccessException();
+            throw new BoardNotAllowAccessException();
         }
 
     }

@@ -17,7 +17,7 @@ public class BoardDataInfoService {
     }
 
     public BoardData get(Long id, String location) { // 다양한 권한 체크일 때
-        BoardData boardData = boardDataRepository.findById(id).orElseThrow(BoardDataNotExistException::new);
+        BoardData boardData = boardDataRepository.findById(id).orElseThrow(BoardDataNotExistsException::new);
         // 게시글 데이터를 조회, 없으면 BoardDataNotExistException 발생
 
         // 게시판 설정 조회 + 접근 권한체크

@@ -7,11 +7,11 @@ import org.project.board.commons.constants.Role;
 import org.project.board.entities.Board;
 import org.project.board.controllers.boards.BoardForm;
 import org.project.board.models.board.BoardDataInfoService;
-import org.project.board.models.board.BoardDataNotExistException;
+import org.project.board.models.board.BoardDataNotExistsException;
 import org.project.board.models.board.BoardDataSaveService;
 import org.project.board.models.board.config.BoardConfigInfoService;
 import org.project.board.models.board.config.BoardConfigSaveService;
-import org.project.board.models.board.config.BoardNotAllowedAccessException;
+import org.project.board.models.board.config.BoardNotAllowAccessException;
 import org.project.board.repositories.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -86,7 +86,7 @@ public class BoardViewTests {
     @Test
     @DisplayName("등록되지 않은 게시글이면 BoardDataNotExistException 발생")
     void getBoardDataNotExistsTest() {
-        assertThrows(BoardDataNotExistException.class , () -> {
+        assertThrows(BoardDataNotExistsException.class , () -> {
             infoService.get(id + 10);
         });
     }
@@ -94,7 +94,7 @@ public class BoardViewTests {
     @Test
     @DisplayName("게시판 사용 여부(use)가 false 접근 불가 - BoardNotAllowAccessException")
     void accessAuthCheck1Test() {
-        assertThrows(BoardNotAllowedAccessException.class, () -> {
+        assertThrows(BoardNotAllowAccessException.class, () -> {
             Board board = getBoard();
             board.setUse(false);
             boardRepository.saveAndFlush(board);
@@ -107,7 +107,7 @@ public class BoardViewTests {
     @DisplayName("회원 전용 글보기 권한 - 비회원 접속시 BoardNotAllowAccessException")
     void accessAuthCheck2Test() {
 
-        assertThrows(BoardNotAllowedAccessException.class, () -> {
+        assertThrows(BoardNotAllowAccessException.class, () -> {
             Board board = getBoard();
             board.setUse(true);
             board.setViewAccessRole(Role.USER);
