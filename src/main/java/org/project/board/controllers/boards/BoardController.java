@@ -10,10 +10,7 @@ import org.project.board.commons.MemberUtil;
 import org.project.board.entities.Board;
 import org.project.board.entities.BoardData;
 import org.project.board.entities.Member;
-import org.project.board.models.board.BoardDataInfoService;
-import org.project.board.models.board.BoardDataSaveService;
-import org.project.board.models.board.GuestPasswordNotCheckedException;
-import org.project.board.models.board.UpdateHitService;
+import org.project.board.models.board.*;
 import org.project.board.models.board.config.BoardConfigInfoService;
 import org.project.board.models.board.config.BoardNotAllowAccessException;
 import org.springframework.http.HttpStatus;
@@ -37,6 +34,7 @@ public class BoardController {
     private final HttpServletResponse response;
     private final MemberUtil memberUtil;
     private final UpdateHitService updateHitService;
+    private final GuestPasswordCheckService passwordCheckService;
     private final HttpSession session;
 
     private Board board; // 게시판 설정
@@ -150,7 +148,7 @@ public class BoardController {
         Long id = (Long)session.getAttribute("guestPwId");
 
         // 비회원 비밀번호 검증
-//        passwordCheckService.check(id, password, mode);
+        passwordCheckService.check(id, password, mode);
 
         // 비회원 비밀번호 검증 완료 처리
         session.setAttribute(mode + "_" + id, true);
@@ -228,7 +226,7 @@ public class BoardController {
             /*
              * 세션 키 - "board_게시글 번호" 가 있으면 비회원 비밀번호 검증 완료
              */
-            if (session.getAttribute(mode+"_" + boardData.getId()) == null) {
+            if (session.getAttribute(mode + "_" + boardData.getId()) == null) {
                 // 1. 위치 - 게시글 board, 삭제 board_delete, 댓글 comment
                 // 2. 게시글 번호
                 session.setAttribute("guestPwMode", mode);
