@@ -35,6 +35,7 @@ public class BoardController {
     private final MemberUtil memberUtil;
     private final UpdateHitService updateHitService;
     private final GuestPasswordCheckService passwordCheckService;
+    private final BoardDataDeleteService deleteService;
     private final HttpSession session;
 
     private Board board; // 게시판 설정
@@ -76,16 +77,17 @@ public class BoardController {
     @GetMapping("/{id}/update")
     public String update(@PathVariable Long id, Model model) {
         BoardData boardData = boardDataInfoService.get(id, "update");
-        Board board = boardData.getBoard();
-        commonProcess(null, "update", model);
+        board = boardData.getBoard();
+        commonProcess(board.getBId(), "update", model);
 
         // 수정 권한 체크
         updateDeletePossibleCheck(boardData);
 
         BoardForm boardForm = new ModelMapper().map(boardData, BoardForm.class);
-        if (boardData.getMember() == null) { // 회원이 없으면 게스트모드
+        if (boardData.getMember() == null) {
             board.setGuest(true);
         }
+
         model.addAttribute("boardForm", boardForm);
 
         return "board/update";
@@ -104,6 +106,23 @@ public class BoardController {
         updateHitService.update(id);  // 게시글 조회수 update
 
         return "board/view";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, Model model) {
+        BoardData boardData = boardDataInfoService.get(id, "update");
+        board = boardData.getBoard();
+        String bid = board.getBId();
+        commonProcess(bid, "update", model);
+
+        // 삭제 권한 체크
+        updateDeletePossibleCheck(boardData, "board_delete");
+
+        // 삭제 처리
+        deleteService.delete(id);
+
+        // 삭제 완료시 게시글 목록으로 이동
+        return "redirect:/board/list/" + bid;
     }
 
     @PostMapping("/save")
@@ -128,15 +147,13 @@ public class BoardController {
             errors.getAllErrors().forEach(System.out::println);
             return "board/" + mode;
         }
-
         System.out.println(boardForm);
         saveService.save(boardForm);
 
-        // 작성 후 이동 설정 - 목록 || 글보기
+        // 작성후 이동 설정 - 목록, 글보기
         String location = board.getLocationAfterWriting();
-
         String url = "redirect:/board/";
-        url += location.equals("view") ? "view/" + boardForm.getId() : "list" + boardForm.getBId();
+        url += location.equals("view") ? "view/" + boardForm.getId() : "list/" + boardForm.getBId();
 
         return url;
     }

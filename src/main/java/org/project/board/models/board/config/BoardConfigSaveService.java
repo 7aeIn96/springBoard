@@ -26,7 +26,6 @@ public class BoardConfigSaveService {
     }
 
     public void save(BoardForm boardForm, Errors errors) { // Errors는 Bean Validation에서 검증( 필수 항목 등등 )하는 Error
-
         /**
          * 에러가 있으면 하단 코드 실행하지 않고, 없으면 save() 실행!
          * 테스트를 위해 errors != null 조건도 추가
@@ -34,6 +33,7 @@ public class BoardConfigSaveService {
         if (errors != null && errors.hasErrors()) {
             return;
         }
+
         /**
          *  게시판 설정 있으면 조회 -> 없으면 엔티티 생성
          *  게시판 등록 모드인 경우 중복 여부 체크!
@@ -67,7 +67,5 @@ public class BoardConfigSaveService {
         board.setSkin(boardForm.getSkin());
 
         boardRepository.saveAndFlush(board);
-
     }
-
 }

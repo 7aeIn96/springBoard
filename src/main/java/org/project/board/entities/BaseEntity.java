@@ -24,4 +24,7 @@ public abstract class BaseEntity {
     @LastModifiedDate
     @Column(insertable = false) // 수정시에만 추가
     private LocalDateTime modifiedAt;
+
+    @Column(insertable = false)
+    private LocalDateTime deletedAt; // 삭제 일시
 }

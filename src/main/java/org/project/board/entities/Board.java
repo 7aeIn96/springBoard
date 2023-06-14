@@ -80,5 +80,4 @@ public class Board extends BaseMemberEntity { // 관리자 게시판 관련 엔�
         String[] categories = category.replaceAll("\\r","").trim().split("\\n");
         return categories;
     }
-
 }
