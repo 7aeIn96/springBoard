@@ -38,7 +38,6 @@ public class BoardConfigSaveService {
          *  게시판 설정 있으면 조회 -> 없으면 엔티티 생성
          *  게시판 등록 모드인 경우 중복 여부 체크!
          */
-
         String bId = boardForm.getBId();
         Board board = boardRepository.findById(bId).orElseGet(Board::new); // 있으면 bId 조회, 없으면 생성!
         String mode = boardForm.getMode();
